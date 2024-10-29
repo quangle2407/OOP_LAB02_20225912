@@ -1,43 +1,51 @@
+import java.util.ArrayList;
+
 public class Cart {
-	public static final int Max_Numbers_Ordered = 20;
-	DigitalVideoDisc itemsOrdered[] = new DigitalVideoDisc[Max_Numbers_Ordered];
-	int qtyOrdered = 0;
+    // Maximum number of DVDs allowed in the cart
+    public static final int MAX_NUMBERS_ORDERED = 20;
 
-	public void addDigitalVideoDisc(DigitalVideoDisc disc) {
-		if (qtyOrdered < Max_Numbers_Ordered) {
-			itemsOrdered[qtyOrdered] = disc;
-			qtyOrdered++;
-			System.out.println("the disc had been added.");
-		} else {
-			System.out.println("the Cart is almost full.");
-		}
-	}
+    // List to store DigitalVideoDisc objects
+    private ArrayList<DigitalVideoDisc> itemsOrdered = new ArrayList<>();
 
-	public void removeDigitalVideoDisc(DigitalVideoDisc Disc) {
-		int found = 0;
-		for (int i = 0; i < qtyOrdered; i++) {
-			if (itemsOrdered[i].equals(Disc)) {
-				for (int j = i; j < qtyOrdered - 1; j++) {
-					itemsOrdered[j] = itemsOrdered[j + 1];
-				}
-				qtyOrdered--;
-				itemsOrdered[qtyOrdered] = null;
-				System.out.println("the Disc has been removed");
-				found = 1;
-				Disc.remove(Disc);
-			}
-		}
-		if (found == 0) {
-			System.out.println("the disc was not found in the Cart.");
-		}
+    // Tracks the quantity of items in the cart
+    private int qtyOrdered = 0;
 
-	}
+    // Method to add a DigitalVideoDisc to the cart
+    public void addDigitalVideoDisc(DigitalVideoDisc disc) {
+        if (qtyOrdered < MAX_NUMBERS_ORDERED) {
+            itemsOrdered.add(disc);
+            qtyOrdered++;
+            System.out.println("The disc has been added.");
+        } else {
+            System.out.println("The cart is almost full. Cannot add more items.");
+        }
+    }
 
-	public float totalCost() {
-		float total = 0;
-		for (int i = 0; i < qtyOrdered; i++) {
-			total += itemsOrdered[i].getCost();
-		}
-		return total;
-	}
+    // Method to remove a DigitalVideoDisc from the cart
+    public void removeDigitalVideoDisc(DigitalVideoDisc disc) {
+        if (itemsOrdered.remove(disc)) {
+            qtyOrdered--;
+            System.out.println("The disc has been removed.");
+        } else {
+            System.out.println("The disc is not in the cart.");
+        }
+    }
+
+    // Method to calculate the total cost of all DVDs in the cart
+    public float totalCost() {
+        float total = 0;
+        for (DigitalVideoDisc disc : itemsOrdered) {
+            total += disc.getCost();
+        }
+        return total;
+    }
+
+    // Method to display the current cart status
+    public void displayCart() {
+        System.out.println("Cart contains " + qtyOrdered + " items:");
+        for (DigitalVideoDisc disc : itemsOrdered) {
+            System.out.println(disc);
+        }
+        System.out.println("Total cost: " + totalCost());
+    }
 }
